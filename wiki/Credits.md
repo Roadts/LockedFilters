@@ -1,15 +1,13 @@
 # Credits
 
-## Built by
+## Founder
 
-- **Roadts / road.js** — creator, API, filters, workers, bot
+- **Roadsign** — creator, api, bot, everything
 
-## Helped
+## Filters
 
-- **Devin** — development: filters, workers, auth, rate limits, Discord bot,
-  deployment, docs
-- **Evicly** — Vortex maintainer (custom-domain tagging integration)
-- **derpman1483** — Isolation
+- **Mrs. Project** — filters
+- **Beecar (Bearcat)** — filters & configuration
 
 ## Testers
 
