@@ -1,34 +1,31 @@
-// minimal lockedfilters discord bot — discord.js v14
-// npm i discord.js    node bot.js
+// tiny !check bot for lockedfilters. discord.js v14
+// npm i discord.js && node bot.js
 const { Client, GatewayIntentBits } = require("discord.js");
 
-const LF_ID = "YOUR_KEY_ID";
+const LF_ID = "YOUR_KEY_ID";            // ur lockedfilters key
 const LF_TOKEN = "lockXX-YOUR_TOKEN";
 const LF_BASE = "https://systempotato.ubgsucks.com";
 const DISCORD_TOKEN = "YOUR_BOT_TOKEN";
-const PREFIX = "!";
 
 const bot = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.MessageContent, // needs the intent enabled in dev portal
   ],
 });
 
 async function check(domain, userId) {
-  // forward the user's snowflake — discord hides real IPs, so the id is the
-  // identity. each user gets their own 10/min + 200/hr bucket.
-  const url =
-    `${LF_BASE}/LockedFilters/v3/check.all/q.${encodeURIComponent(domain)}` +
-    `/a.rqst-rs.discord-${userId}/${LF_ID}?t=${LF_TOKEN}`;
+  // discord doesnt give u the users ip so forward their id instead —
+  // discord-<id> gets each user their own rate bucket
+  const url = `${LF_BASE}/LockedFilters/v3/check.all/q.${encodeURIComponent(domain)}/a.rqst-rs.discord-${userId}/${LF_ID}?t=${LF_TOKEN}`;
   const res = await fetch(url);
   return res.json();
 }
 
 bot.on("messageCreate", async (m) => {
-  if (m.author.bot || !m.content.startsWith(PREFIX + "check ")) return;
-  const domain = m.content.slice(PREFIX.length + 6).trim();
+  if (m.author.bot || !m.content.startsWith("!check ")) return;
+  const domain = m.content.slice(7).trim();
   const data = await check(domain, m.author.id);
   if (data.error) return m.reply(`error: ${data.error}`);
   const lines = Object.entries(data.results).map(([f, r]) => {

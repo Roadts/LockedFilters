@@ -1,76 +1,63 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LockedFilters — check</title>
-  <style>
-    body { background: #0b0b0e; color: #eee; font-family: system-ui, sans-serif;
-           display: flex; justify-content: center; padding: 48px 16px; }
-    .card { background: #121216; border: 1px solid #26262e; border-radius: 14px;
-            padding: 24px; width: 640px; max-width: 100%; }
-    h1 { font-size: 20px; margin: 0 0 4px; }
-    p.sub { color: #888; font-size: 13px; margin: 0 0 16px; }
-    .row { display: flex; gap: 8px; }
-    input { flex: 1; background: #1a1a20; border: 1px solid #2e2e38;
-            border-radius: 8px; padding: 10px 12px; color: #eee; }
-    button { background: #ff8a00; border: 0; border-radius: 8px;
-             padding: 10px 18px; font-weight: 600; cursor: pointer; }
-    table { width: 100%; margin-top: 16px; border-collapse: collapse; font-size: 14px; }
-    td { padding: 6px 4px; border-bottom: 1px solid #1e1e26; }
-    .block { color: #ff5050; } .allow { color: #60ff60; } .err { color: #ffaa00; }
-    #status { color: #888; font-size: 13px; margin-top: 12px; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lockedfilters check</title>
+<style>
+  body{background:#0b0b0e;color:#eee;font-family:system-ui;display:flex;justify-content:center;padding:48px 16px}
+  .card{background:#121216;border:1px solid #26262e;border-radius:14px;padding:24px;width:640px;max-width:100%}
+  h1{font-size:20px;margin:0 0 4px}
+  .sub{color:#888;font-size:13px;margin:0 0 16px}
+  .row{display:flex;gap:8px}
+  input{flex:1;background:#1a1a20;border:1px solid #2e2e38;border-radius:8px;padding:10px 12px;color:#eee}
+  button{background:#ff8a00;border:0;border-radius:8px;padding:10px 18px;font-weight:600;cursor:pointer}
+  table{width:100%;margin-top:16px;border-collapse:collapse;font-size:14px}
+  td{padding:6px 4px;border-bottom:1px solid #1e1e26}
+  .block{color:#ff5050}.allow{color:#60ff60}.err{color:#ffaa00}
+  #status{color:#888;font-size:13px;margin-top:12px}
+</style>
 </head>
 <body>
-  <div class="card">
-    <h1>LockedFilters</h1>
-    <p class="sub">check which web filters block a domain</p>
-    <div class="row">
-      <input id="d" placeholder="example.com" />
-      <button id="go">check</button>
-    </div>
-    <div id="status"></div>
-    <table id="out"></table>
+<div class="card">
+  <h1>lockedfilters</h1>
+  <p class="sub">see which filters block a domain</p>
+  <div class="row">
+    <input id="d" placeholder="discord.com">
+    <button id="go">check</button>
   </div>
+  <div id="status"></div>
+  <table id="out"></table>
+</div>
 
-  <script>
-    // your lockedfilters key — get one from a founder
-    const LF_ID = "YOUR_KEY_ID";
-    const LF_TOKEN = "lockXX-YOUR_TOKEN";
-    const LF_BASE = "https://systempotato.ubgsucks.com";
+<script>
+// put ur key here. ask a founder for one, dont commit a real one
+const LF_ID = "YOUR_KEY_ID";
+const LF_TOKEN = "lockXX-YOUR_TOKEN";
+const LF_BASE = "https://systempotato.ubgsucks.com";
 
-    // forward the visitor's real ip — server-side this is req.ip;
-    // from a static page we grab it once from an echo service
-    let clientIp = "";
-    fetch("https://api.ipify.org?format=json")
-      .then((r) => r.json())
-      .then((j) => (clientIp = j.ip))
-      .catch(() => {});
+// rate limits go off the real visitor ip not ur server, so grab it once here.
+// in a real backend you'd just use req.ip instead of this
+let clientIp = "";
+fetch("https://api.ipify.org?format=json").then(r=>r.json()).then(j=>clientIp=j.ip).catch(()=>{});
 
-    document.getElementById("go").onclick = async () => {
-      const d = document.getElementById("d").value.trim();
-      if (!d) return;
-      const st = document.getElementById("status");
-      st.textContent = "checking…";
-      document.getElementById("out").innerHTML = "";
-      const q = new URLSearchParams({ t: LF_TOKEN });
-      if (clientIp) q.set("frwdCliIp", clientIp);
-      const res = await fetch(
-        `${LF_BASE}/LockedFilters/v3/check.all/q.${encodeURIComponent(d)}/a.rqst-rs/${LF_ID}?${q}`,
-      );
-      const data = await res.json();
-      if (data.error) { st.textContent = data.error; return; }
-      st.textContent = "";
-      document.getElementById("out").innerHTML = Object.entries(data.results)
-        .map(([f, r]) => {
-          const cls = r.error ? "err" : r.allow ? "allow" : "block";
-          const txt = r.error ? "error" : r.allow ? "allowed" : "blocked";
-          return `<tr><td>${f}</td><td>${r.category || "—"}</td>
-                  <td class="${cls}">${txt}</td><td>${r.ms}ms</td></tr>`;
-        })
-        .join("");
-    };
-  </script>
+go.onclick = async () => {
+  const d = document.getElementById("d").value.trim();
+  if (!d) return;
+  status.textContent = "checking...";
+  out.innerHTML = "";
+  const q = new URLSearchParams({t: LF_TOKEN});
+  if (clientIp) q.set("frwdCliIp", clientIp);
+  const res = await fetch(`${LF_BASE}/LockedFilters/v3/check.all/q.${encodeURIComponent(d)}/a.rqst-rs/${LF_ID}?${q}`);
+  const data = await res.json();
+  if (data.error) { status.textContent = data.error; return; }
+  status.textContent = "";
+  out.innerHTML = Object.entries(data.results).map(([f, r]) => {
+    const cls = r.error ? "err" : r.allow ? "allow" : "block";
+    const txt = r.error ? "error" : r.allow ? "allowed" : "blocked";
+    return `<tr><td>${f}</td><td>${r.category||"—"}</td><td class="${cls}">${txt}</td><td>${r.ms}ms</td></tr>`;
+  }).join("");
+};
+</script>
 </body>
 </html>

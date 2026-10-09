@@ -1,15 +1,11 @@
 # Examples
 
-Working examples live in [`/examples`](https://github.com/Roadts/LockedFilters/tree/main/examples)
-on the main repo.
+working stuff lives in [`/examples`](https://github.com/Roadts/LockedFilters/tree/main/examples) on the repo.
 
 ## [Website](https://github.com/Roadts/LockedFilters/tree/main/examples/website)
 
-Single-file `index.html` — paste your key, enter a domain, get the full
-filter table. Forwards the visitor's real IP via `frwdCliIp`.
+one `index.html` — drop ur key in, type a domain, get the whole filter table. forwards the visitor ip so rate limits hit them not u.
 
 ## [Discord bot](https://github.com/Roadts/LockedFilters/tree/main/examples/discord-bot)
 
-Minimal `bot.js` — `!check <domain>` prefix command that runs
-`check.all` and forwards the author's Discord id via `a.discord-<id>` so
-each user gets their own rate bucket.
+barebones `bot.js` — `!check <domain>` runs `check.all` and forwards `a.discord-<id>` so each user gets their own bucket.

@@ -1,7 +1,6 @@
-# Examples
+# examples
 
-- [`website/`](website) — single-file page, runs `check.all` in the browser
-- [`discord-bot/`](discord-bot) — minimal `!check` bot, forwards user IDs
+- [`website/`](website) — one html file, drop ur key in and it runs `check.all` from the browser
+- [`discord-bot/`](discord-bot) — `!check <domain>` bot that forwards the user's discord id
 
-Both need a LockedFilters key (`id` + `lock<n>-…` token). Get one from a
-founder — never commit a real key.
+both need a key (id + `lock<n>-` token). ask a founder. dont commit real keys.
