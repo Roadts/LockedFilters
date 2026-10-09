@@ -8,7 +8,3 @@
 
 - **Mrs. Project** — filters
 - **Beecar (Bearcat)** — filters & configuration
-
-## Testers
-
-Marki · bliss · decayed · MoonGC · goaded · logan · VortexAKA_EV
